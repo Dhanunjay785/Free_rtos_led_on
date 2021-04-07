@@ -1,0 +1,44 @@
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
+#define led = 2; 
+#define led = 4;
+
+void setup()
+{ pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  delay(1000);
+
+  digitalWrite(2,LOW);
+  digitalWrite(4,LOW);
+
+  xTaskCreate(red,  "Red",  1024, NULL, 3, NULL);
+  xTaskCreate(blue, "Blue", 1024, NULL, 3, NULL);
+  vTaskStartScheduler();
+}
+
+
+void loop()
+{
+}
+
+void red(void*pvParameters)
+{ while(1)
+    { digitalWrite(2, LOW);
+      vTaskDelay(500);
+      digitalWrite(2, HIGH);
+      vTaskDelay(500);
+    }
+}
+
+void blue(void*pvParameters)
+{ while(1)
+    { digitalWrite(4, LOW);
+      vTaskDelay(500);
+      digitalWrite(4, HIGH);
+      vTaskDelay(500);
+    }
+}
